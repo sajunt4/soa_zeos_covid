@@ -100,3 +100,17 @@ ENTRY(get_stats)
 	popl %ebp
 	ret
 
+/* int get_key(char * c) */
+ENTRY(get_key)
+	pushl %ebp
+	movl %esp, %ebp
+	pushl %ebx;  // Save EBX, ESI and EDI if modified
+	movl $11, %eax; 		//sys_getkey
+	movl 0x8(%ebp), %ebx;	//char * c
+	call syscall_sysenter
+	popl %ebx
+	test %eax, %eax
+	js nok	// if (eax < 0) -->
+	popl %ebp
+	ret
+

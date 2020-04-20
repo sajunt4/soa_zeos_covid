@@ -11,6 +11,7 @@
 #include <mm.h>
 #include <io.h>
 #include <utils.h>
+#include <keys_buffer.h>
 //#include <zeos_mm.h> /* TO BE DELETED WHEN ADDED THE PROCESS MANAGEMENT CODE TO BECOME MULTIPROCESS */
 
 
@@ -54,6 +55,8 @@ inline void set_seg_regs(Word data_sel, Word stack_sel, DWord esp)
 
 }
 
+circular_buffer * keys_buffer = NULL;
+
 /*
  *   Main entry point to ZEOS Operating System
  */
@@ -86,6 +89,8 @@ int __attribute__((__section__(".text.main")))
 /* Initialize an address space to be used for the monoprocess version of ZeOS */
 
   //monoprocess_init_addr_space(); /* TO BE DELETED WHEN ADDED THE PROCESS MANAGEMENT CODE TO BECOME MULTIPROCESS */
+
+  init_circular_buffer(&keys_buffer);
 
   /* Initialize Scheduling */
   init_sched();

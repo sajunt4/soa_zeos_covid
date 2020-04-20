@@ -17,6 +17,8 @@
 
 #include <errno.h>
 
+#include <keys_buffer.h>
+
 #define LECTURA 0
 #define ESCRIPTURA 1
 
@@ -235,4 +237,14 @@ int sys_get_stats(int pid, struct stats *st)
     }
   }
   return -ESRCH; /*ESRCH */
+}
+
+int sys_get_char(char * c){
+  char data;
+  if(circular_buffer_pop(&keys_buffer, &data) < 0) return -69; 
+  //res es positivo aquí cuando no hay teclas restantes. Debería ser al revés.
+
+  *c = data;
+
+  return 1;
 }

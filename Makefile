@@ -26,7 +26,7 @@ SYSLDFLAGS = -T system.lds
 USRLDFLAGS = -T user.lds
 LINKFLAGS = -g
 
-SYSOBJ = interrupt.o entry.o sys_call_table.o io.o sched.o sys.o mm.o devices.o utils.o hardware.o list.o p_stats.o kernel-utils.o
+SYSOBJ = interrupt.o entry.o sys_call_table.o io.o sched.o sys.o mm.o devices.o utils.o hardware.o list.o p_stats.o kernel-utils.o keys_buffer.o
 
 LIBZEOS = -L . -l zeos -l auxjp
 
@@ -66,7 +66,7 @@ sys_call_table.s: sys_call_table.S $(INCLUDEDIR)/asm.h $(INCLUDEDIR)/segment.h
 
 user.o:user.c $(INCLUDEDIR)/libc.h
 
-interrupt.o:interrupt.c $(INCLUDEDIR)/interrupt.h $(INCLUDEDIR)/segment.h $(INCLUDEDIR)/types.h
+interrupt.o:interrupt.c $(INCLUDEDIR)/interrupt.h $(INCLUDEDIR)/segment.h $(INCLUDEDIR)/types.h $(INCLUDEDIR)/keys_buffer.h
 
 io.o:io.c $(INCLUDEDIR)/io.h
 
@@ -79,6 +79,8 @@ mm.o:mm.c $(INCLUDEDIR)/types.h $(INCLUDEDIR)/mm.h
 sys.o:sys.c $(INCLUDEDIR)/devices.h
 
 utils.o:utils.c $(INCLUDEDIR)/utils.h
+
+keys_buffer.o:keys_buffer.c $(INCLUDEDIR)/keys_buffer.h
 
 p_stats.o:p_stats.c $(INCLUDEDIR)/utils.h
 
