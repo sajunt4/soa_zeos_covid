@@ -30,4 +30,6 @@ int get_stats(int pid, struct stats *st);
 
 int get_key(char * c);
 
+int put_screen(char * s);
+
 #endif  /* __LIBC_H__ */

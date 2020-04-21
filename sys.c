@@ -239,12 +239,24 @@ int sys_get_stats(int pid, struct stats *st)
   return -ESRCH; /*ESRCH */
 }
 
-int sys_get_char(char * c){
+int sys_get_key(char * c){
   char data;
   int res = circular_buffer_pop(&keys_buffer, &data);
   if(res < 0) return -EEMPTBUF;
 
   *c = data;
+
+  return 1;
+}
+
+int sys_put_screen(char * c){
+  //TODO: check buffer size and return error?
+  for(int x = 0; x < 80; x++){
+    for(int y = 0; y < 25; y++){
+      //Potser hauriem de fer una funció per imprimir mes eficient, sense comprobacions
+      printc_xy(x, y, *((c + y * 80) + x)); 
+    }
+  }
 
   return 1;
 }
