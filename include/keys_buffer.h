@@ -13,8 +13,9 @@ int circular_buffer_push(circular_buffer * c, char data);
 
 int circular_buffer_pop(circular_buffer * c, char * data);
 
+//Not being used
 void init_circular_buffer(circular_buffer * c);
 
-extern circular_buffer * keys_buffer;
+extern circular_buffer keys_buffer;
 
 #endif

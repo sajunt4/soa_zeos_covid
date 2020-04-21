@@ -241,8 +241,8 @@ int sys_get_stats(int pid, struct stats *st)
 
 int sys_get_char(char * c){
   char data;
-  if(circular_buffer_pop(&keys_buffer, &data) < 0) return -69; 
-  //res es positivo aquí cuando no hay teclas restantes. Debería ser al revés.
+  int res = circular_buffer_pop(&keys_buffer, &data);
+  if(res < 0) return -EEMPTBUF;
 
   *c = data;
 

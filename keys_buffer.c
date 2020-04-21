@@ -30,6 +30,7 @@ int circular_buffer_pop(circular_buffer * c, char * data)
     return 1; //Success
 }
 
+//Not being used
 void init_circular_buffer(circular_buffer * c)
 {
     c->head = 0;

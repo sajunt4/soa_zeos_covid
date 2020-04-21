@@ -43,14 +43,19 @@ void clock_routine()
   schedule();
 }
 
+circular_buffer keys_buffer;
+
 void keyboard_routine()
 {
   unsigned char c = inb(0x60);
   char finalChar = char_map[c&0x7f];
 
-  if (c&0x80) printc_xy(0, 0, finalChar);
+  if (c&0x80) {
+    printc_xy(0, 0, finalChar);
 
-  circular_buffer_push(&keys_buffer, finalChar);
+    circular_buffer_push(&keys_buffer, finalChar);
+  }
+
 }
 
 void setInterruptHandler(int vector, void (*handler)(), int maxAccessibleFromPL)
