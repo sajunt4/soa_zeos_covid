@@ -11,6 +11,8 @@
 
 #include <zeos_interrupt.h>
 
+#include <circular_buffer.h>
+
 Gate idt[IDT_ENTRIES];
 Register    idtR;
 
@@ -41,11 +43,20 @@ void clock_routine()
   schedule();
 }
 
+extern char_circular_buffer keys_buffer;
+
 void keyboard_routine()
 {
   unsigned char c = inb(0x60);
   
-  if (c&0x80) printc_xy(0, 0, char_map[c&0x7f]);
+  if(keys_buffer.capacity == 0)
+  {
+    char_circular_buffer_init(&keys_buffer, 24);
+  }
+  if (c&0x80)
+  {
+    char_circular_buffer_push(&keys_buffer, c);
+  }
 }
 
 void setInterruptHandler(int vector, void (*handler)(), int maxAccessibleFromPL)
