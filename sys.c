@@ -253,3 +253,19 @@ int sys_get_key(char * c){
     return 0;
 }
 
+int sys_put_screen(char c[NUM_COLUMNS][NUM_ROWS]){
+    if (!access_ok(VERIFY_READ, c, NUM_COLUMNS*NUM_ROWS))
+    {
+      return -EFAULT;
+    }
+    for(int x = 0; x < NUM_COLUMNS; x++)
+    {
+      for(int y = 0; y < NUM_ROWS; y++)
+      {
+        printc_xy(x, y, c[y][x]);
+      }
+    }
+
+    return 0;
+}
+
