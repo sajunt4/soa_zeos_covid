@@ -114,3 +114,17 @@ ENTRY(get_key)
 	popl %ebp
 	ret
 
+/* int put_screen(char * s) */
+ENTRY(put_screen)
+	pushl %ebp
+	movl %esp, %ebp
+	pushl %ebx;  // Save EBX, ESI and EDI if modified
+	movl $12, %eax; 		//sys_put_screen
+	movl 0x8(%ebp), %ebx;	//char * c
+	call syscall_sysenter
+	popl %ebx
+	test %eax, %eax
+	js nok	// if (eax < 0) -->
+	popl %ebp
+	ret
+
