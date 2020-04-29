@@ -28,4 +28,6 @@ int yield();
 
 int get_stats(int pid, struct stats *st);
 
+int get_key(char * c);
+
 #endif  /* __LIBC_H__ */

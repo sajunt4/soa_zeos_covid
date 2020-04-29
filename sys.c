@@ -17,6 +17,8 @@
 
 #include <errno.h>
 
+#include <circular_buffer.h>
+
 #define LECTURA 0
 #define ESCRIPTURA 1
 
@@ -236,3 +238,18 @@ int sys_get_stats(int pid, struct stats *st)
   }
   return -ESRCH; /*ESRCH */
 }
+
+//This structure will hold the scan code of the keys pressed by the user.
+//It will also include the obvious information that the key was actually pressed (and not released)
+char_circular_buffer keys_buffer = {{}, 0, 0, 0};
+
+int sys_get_key(char * c){
+    char data;
+    int res = char_circular_buffer_pop(&keys_buffer, &data);
+    if(res < 0) return -ENOKEYS;
+
+    *c = data;
+
+    return 0;
+}
+
