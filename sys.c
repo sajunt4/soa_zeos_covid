@@ -253,7 +253,7 @@ int sys_get_key(char * c){
     return 0;
 }
 
-int sys_put_screen(char c[NUM_COLUMNS][NUM_ROWS]){
+int sys_put_screen(char c[NUM_ROWS][NUM_COLUMNS]){
     if (!access_ok(VERIFY_READ, c, NUM_COLUMNS*NUM_ROWS))
     {
       return -EFAULT;
