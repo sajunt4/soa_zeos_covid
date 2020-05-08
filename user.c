@@ -230,11 +230,11 @@ void userMovement(Character * c)
         return;
     }
 
-    if(input == 'a'){
+    if(input == 0x4B){
         updateCharacterPosition(c, negative, none);
-    } else if(input == 'd'){
+    } else if(input == 0x4D){
         updateCharacterPosition(c, positive, none);
-    } else if(input == 'w'){
+    } else if(input == 0x48){
         if(!c->projectile.active)
             shootProjectile(c, negative, 0x5E);
     }
