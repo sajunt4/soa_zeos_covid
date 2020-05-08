@@ -55,7 +55,7 @@ void keyboard_routine()
   }
   if (c&0x80)
   {
-      char_circular_buffer_push(&keys_buffer, char_map[c&0x7f]);
+      char_circular_buffer_push(&keys_buffer, c&0x7f);
   }
 }
 
