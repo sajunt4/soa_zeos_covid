@@ -32,4 +32,6 @@ int get_key(char * c);
 
 int put_screen(char * s);
 
+void * sbrk(int n_bytes);
+
 #endif  /* __LIBC_H__ */
