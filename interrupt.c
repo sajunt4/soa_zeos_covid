@@ -19,11 +19,11 @@ Register    idtR;
 char char_map[] =
 {
   '\0','\0','1','2','3','4','5','6',
-  '7','8','9','0','\'','¡','\0','\0',
+  '7','8','9','0','\'','ï¿½','\0','\0',
   'q','w','e','r','t','y','u','i',
   'o','p','`','+','\0','\0','a','s',
-  'd','f','g','h','j','k','l','ñ',
-  '\0','º','\0','ç','z','x','c','v',
+  'd','f','g','h','j','k','l','ï¿½',
+  '\0','ï¿½','\0','ï¿½','z','x','c','v',
   'b','n','m',',','.','-','\0','*',
   '\0','\0','\0','\0','\0','\0','\0','\0',
   '\0','\0','\0','\0','\0','\0','\0','7',
@@ -37,7 +37,7 @@ int zeos_ticks = 0;
 
 void clock_routine()
 {
-  zeos_show_clock();
+  //zeos_show_clock(); //clock disabled
   zeos_ticks ++;
   
   schedule();
@@ -48,14 +48,14 @@ extern char_circular_buffer keys_buffer;
 void keyboard_routine()
 {
   unsigned char c = inb(0x60);
-  
+
   if(keys_buffer.capacity == 0)
   {
     char_circular_buffer_init(&keys_buffer, 24);
   }
   if (c&0x80)
   {
-    char_circular_buffer_push(&keys_buffer, c);
+      char_circular_buffer_push(&keys_buffer, c&0x7f);
   }
 }
 
