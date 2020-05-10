@@ -1,5 +1,6 @@
 #include <utils.h>
 #include <types.h>
+#include <sched.h>
 
 #include <mm_address.h>
 
@@ -70,16 +71,18 @@ int access_ok(int type, const void * addr, unsigned long size)
   addr_fin=((((unsigned long)addr)+size)>>12);
   if (addr_fin < addr_ini) return 0; //This looks like an overflow ... deny access
 
+  struct task_struct *t = current();
+  int NUM_PAG_HEAP = LOG_PAGE(t->brk) - LOG_PAGE(t->start_brk);
   switch(type)
   {
     case VERIFY_WRITE:
       /* Should suppose no support for automodifyable code */
       if ((addr_ini>=USER_FIRST_PAGE+NUM_PAG_CODE)&&
-          (addr_fin<=USER_FIRST_PAGE+NUM_PAG_CODE+NUM_PAG_DATA))
+          (addr_fin<=USER_FIRST_PAGE+NUM_PAG_CODE+NUM_PAG_DATA+NUM_PAG_HEAP))
 	  return 1;
     default:
       if ((addr_ini>=USER_FIRST_PAGE)&&
-  	(addr_fin<=(USER_FIRST_PAGE+NUM_PAG_CODE+NUM_PAG_DATA)))
+	(addr_fin<=(USER_FIRST_PAGE+NUM_PAG_CODE+NUM_PAG_DATA+NUM_PAG_HEAP)))
           return 1;
   }
   return 0;
