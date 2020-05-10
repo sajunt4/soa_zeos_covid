@@ -269,3 +269,29 @@ int sys_put_screen(char c[NUM_ROWS][NUM_COLUMNS]){
     return 0;
 }
 
+int sys_sbrk(int n)
+{
+  struct task_struct *t = current();
+  int old_brk = t->brk;
+  for(int tmp_brk = t->brk; LOG_PAGE((old_brk+n-1)) > LOG_PAGE((tmp_brk-1)); tmp_brk+=PAGE_SIZE)
+  {
+    int new_ph_pag=alloc_frame();
+    page_table_entry *process_PT = get_PT(current());
+    if (new_ph_pag!=-1)
+    {
+      set_ss_pag(process_PT, LOG_PAGE((tmp_brk+PAGE_SIZE-1)), new_ph_pag);
+    }
+    else
+    {
+      for (int del_brk = t->brk; LOG_PAGE((tmp_brk-old_brk-1)) > LOG_PAGE((del_brk-old_brk-1)); del_brk+=PAGE_SIZE)
+      {
+        free_frame(get_frame(process_PT, LOG_PAGE((del_brk+PAGE_SIZE-1))));
+        del_ss_pag(process_PT, LOG_PAGE((del_brk+PAGE_SIZE-1)));
+      }
+      return -ENOMEM;
+    }
+  }
+  t->brk = t->brk+n;
+  return old_brk;
+}
+

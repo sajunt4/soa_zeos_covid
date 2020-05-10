@@ -20,10 +20,12 @@
 #define L_USER_START        0x100000
 #define PH_USER_START       0x100000
 #define USER_ESP	L_USER_START+(NUM_PAG_CODE+NUM_PAG_DATA)*0x1000-16
+#define USER_BRK	L_USER_START+(NUM_PAG_CODE+NUM_PAG_DATA)*0x1000
 
 #define USER_FIRST_PAGE	(L_USER_START>>12)
 
 #define PH_PAGE(x) (x>>12)
+#define LOG_PAGE(x) (x>>12)
 
 #endif
 

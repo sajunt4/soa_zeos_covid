@@ -24,6 +24,9 @@ struct task_struct {
   enum state_t state;		/* State of the process */
   int total_quantum;		/* Total quantum of the process */
   struct stats p_stats;		/* Process stats */
+  int start_brk;            /* Original Break pointer */
+  int brk;                  /* Break pointer */
+
 };
 
 union task_union {
