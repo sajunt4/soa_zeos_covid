@@ -244,6 +244,7 @@ int sys_get_stats(int pid, struct stats *st)
 char_circular_buffer keys_buffer = {{}, 0, 0, 0};
 
 int sys_get_key(char * c){
+    if(c == NULL) return -ENULLPOINT;
     char data;
     int res = char_circular_buffer_pop(&keys_buffer, &data);
     if(res < 0) return -ENOKEYS;
@@ -271,6 +272,7 @@ int sys_put_screen(char c[NUM_ROWS][NUM_COLUMNS]){
 
 int sys_sbrk(int n)
 {
+  if(n<0) return -EINVAL;
   struct task_struct *t = current();
   int old_brk = t->brk;
   for(int tmp_brk = t->brk; LOG_PAGE((old_brk+n-1)) > LOG_PAGE((tmp_brk-1)); tmp_brk+=PAGE_SIZE)
