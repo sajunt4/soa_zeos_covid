@@ -244,6 +244,7 @@ int sys_get_stats(int pid, struct stats *st)
 char_circular_buffer keys_buffer = {{}, 0, 0, 0};
 
 int sys_get_key(char * c){
+    if(c == NULL) return -ENULLPOINT;
     char data;
     int res = char_circular_buffer_pop(&keys_buffer, &data);
     if(res < 0) return -ENOKEYS;
