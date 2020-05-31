@@ -249,21 +249,24 @@ int sys_get_key(char * c){
     int res = char_circular_buffer_pop(&keys_buffer, &data);
     if(res < 0) return -ENOKEYS;
 
-    *c = data;
+    copy_to_user(&data, c, sizeof(*c));
 
     return 0;
 }
+
+char temp_screen[NUM_ROWS][NUM_COLUMNS];
 
 int sys_put_screen(char c[NUM_ROWS][NUM_COLUMNS]){
     if (!access_ok(VERIFY_READ, c, NUM_COLUMNS*NUM_ROWS))
     {
       return -EFAULT;
     }
+    copy_from_user(c, temp_screen, sizeof(char ) * NUM_COLUMNS*NUM_ROWS);
     for(int x = 0; x < NUM_COLUMNS; x++)
     {
       for(int y = 0; y < NUM_ROWS; y++)
       {
-        printc_xy(x, y, c[y][x]);
+        printc_xy(x, y, temp_screen[y][x]);
       }
     }
 
