@@ -136,6 +136,7 @@
 #define EKEYREJECTED    129 /* Key was rejected by service */
 
 #define ENOKEYS    130 //No keys left to read
+#define ENULLPOINT  131 //Pointer points nowhere
 
 #endif
 
