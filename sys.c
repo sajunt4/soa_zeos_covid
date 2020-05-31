@@ -19,6 +19,8 @@
 
 #include <circular_buffer.h>
 
+#include <libc.h>
+
 #define LECTURA 0
 #define ESCRIPTURA 1
 
@@ -81,7 +83,7 @@ int sys_fork(void)
   /* Allocate pages for DATA+STACK */
   int new_ph_pag, pag, i;
   page_table_entry *process_PT = get_PT(&uchild->task);
-  for (pag=0; pag<NUM_PAG_DATA; pag++)
+  for (pag=0; pag<NUM_PAG_DATA+(LOG_PAGE((current()->brk-1))-LOG_PAGE((current()->start_brk-1))); pag++)
   {
     new_ph_pag=alloc_frame();
     if (new_ph_pag!=-1) /* One page allocated */
@@ -196,7 +198,7 @@ void sys_exit()
   page_table_entry *process_PT = get_PT(current());
 
   // Deallocate all the propietary physical pages
-  for (i=0; i<NUM_PAG_DATA; i++)
+  for (i=0; i<NUM_PAG_DATA+(LOG_PAGE((current()->brk-1))-LOG_PAGE((current()->start_brk-1))); i++)
   {
     free_frame(get_frame(process_PT, PAG_LOG_INIT_DATA+i));
     del_ss_pag(process_PT, PAG_LOG_INIT_DATA+i);
